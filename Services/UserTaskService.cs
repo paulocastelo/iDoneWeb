@@ -15,5 +15,33 @@ namespace iDoneWeb.Services
         {
             return await _context.UserTasks.ToListAsync();
         }
+        // Create method
+        public async Task<UserTask> CreateUserTaskAsync(UserTask userTask)
+        {
+            _context.Add(userTask);
+            await _context.SaveChangesAsync();
+            return userTask;
+        }
+
+        // Update method
+        public async Task<UserTask> UpdateUserTaskAsync(UserTask userTask)
+        {
+            _context.Update(userTask);
+            await _context.SaveChangesAsync();
+            return userTask;
+        }
+        // Delete method
+        public async Task<UserTask> DeleteUserTaskAsync(int id)
+        {
+            var userTask = await _context.UserTasks.FindAsync(id);
+            if (userTask == null)
+            {
+                throw new ArgumentNullException(nameof(userTask), "User task not found.");
+            }
+            _context.UserTasks.Remove(userTask);
+            await _context.SaveChangesAsync();
+            return userTask;
+        }
+
     }
 }

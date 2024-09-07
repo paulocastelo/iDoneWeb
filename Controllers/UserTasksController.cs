@@ -7,22 +7,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using iDoneWeb.Data;
 using iDoneWeb.Models;
+using iDoneWeb.Services;
 
 namespace iDoneWeb.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class UserTasksController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly UserTaskService _userTaskService;
 
-        public UserTasksController(ApplicationDbContext context)
+        public UserTasksController(UserTaskService userTaskService)
         {
-            _context = context;
+            _userTaskService = userTaskService;
         }
 
         // GET: UserTasks
         public async Task<IActionResult> Index()
         {
-            return View(await _context.UserTasks.ToListAsync());
+            var userTasks = await _userTaskService.GetAllUserTasksAsync();
+            return View(userTasks);
         }
 
         // GET: UserTasks/Details/5
@@ -33,14 +37,14 @@ namespace iDoneWeb.Controllers
                 return NotFound();
             }
 
-            var userTask = await _context.UserTasks
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (userTask == null)
+            var userTask = await _userTaskService.GetAllUserTasksAsync();
+            var task = userTask.FirstOrDefault(m => m.Id == id);
+            if (task == null)
             {
                 return NotFound();
             }
 
-            return View(userTask);
+            return View(task);
         }
 
         // GET: UserTasks/Create
@@ -56,8 +60,7 @@ namespace iDoneWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(userTask);
-                await _context.SaveChangesAsync();
+                await _userTaskService.CreateUserTaskAsync(userTask);
                 return RedirectToAction(nameof(Index));
             }
             return View(userTask);
@@ -71,12 +74,13 @@ namespace iDoneWeb.Controllers
                 return NotFound();
             }
 
-            var userTask = await _context.UserTasks.FindAsync(id);
-            if (userTask == null)
+            var userTask = await _userTaskService.GetAllUserTasksAsync();
+            var task = userTask.FirstOrDefault(m => m.Id == id);
+            if (task == null)
             {
                 return NotFound();
             }
-            return View(userTask);
+            return View(task);
         }
 
         // POST: UserTasks/Edit/5
@@ -93,12 +97,11 @@ namespace iDoneWeb.Controllers
             {
                 try
                 {
-                    _context.Update(userTask);
-                    await _context.SaveChangesAsync();
+                    await _userTaskService.UpdateUserTaskAsync(userTask);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserTaskExists(userTask.Id))
+                    if (!await UserTaskExists(userTask.Id))
                     {
                         return NotFound();
                     }
@@ -120,14 +123,14 @@ namespace iDoneWeb.Controllers
                 return NotFound();
             }
 
-            var userTask = await _context.UserTasks
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (userTask == null)
+            var userTask = await _userTaskService.GetAllUserTasksAsync();
+            var task = userTask.FirstOrDefault(m => m.Id == id);
+            if (task == null)
             {
                 return NotFound();
             }
 
-            return View(userTask);
+            return View(task);
         }
 
         // POST: UserTasks/Delete/5
@@ -135,19 +138,14 @@ namespace iDoneWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var userTask = await _context.UserTasks.FindAsync(id);
-            if (userTask != null)
-            {
-                _context.UserTasks.Remove(userTask);
-            }
-
-            await _context.SaveChangesAsync();
+            await _userTaskService.DeleteUserTaskAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserTaskExists(int id)
+        private async Task<bool> UserTaskExists(int id)
         {
-            return _context.UserTasks.Any(e => e.Id == id);
+            var userTasks = await _userTaskService.GetAllUserTasksAsync();
+            return userTasks.Any(e => e.Id == id);
         }
     }
 }
