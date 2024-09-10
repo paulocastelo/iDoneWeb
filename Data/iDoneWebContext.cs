@@ -2,9 +2,9 @@
 using iDoneWeb.Models;
 namespace iDoneWeb.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class iDoneWebContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        public iDoneWebContext(DbContextOptions<iDoneWebContext> options) : base(options)
         {
         }
         public DbSet<UserTask> UserTasks { get; set; } // Table Name

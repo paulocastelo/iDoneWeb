@@ -11,8 +11,7 @@ using iDoneWeb.Services;
 
 namespace iDoneWeb.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+
     public class UserTasksController : Controller
     {
         private readonly UserTaskService _userTaskService;
@@ -23,6 +22,7 @@ namespace iDoneWeb.Controllers
         }
 
         // GET: UserTasks
+        [HttpGet] // Specify the HTTP verb
         public async Task<IActionResult> Index()
         {
             var userTasks = await _userTaskService.GetAllUserTasksAsync();
@@ -48,6 +48,7 @@ namespace iDoneWeb.Controllers
         }
 
         // GET: UserTasks/Create
+        [HttpGet("Create")] // Specify the HTTP verb and route
         public IActionResult Create()
         {
             return View();
@@ -67,6 +68,7 @@ namespace iDoneWeb.Controllers
         }
 
         // GET: UserTasks/Edit/5
+        [HttpGet("Edit/{id}")] // Specify the HTTP verb and route parameter
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,7 +86,7 @@ namespace iDoneWeb.Controllers
         }
 
         // POST: UserTasks/Edit/5
-        [HttpPost]
+        [HttpPost("Edit/{id}")] // Specify the HTTP verb and route parameter
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CreatedDate,DueDate,Status")] UserTask userTask)
         {
@@ -116,6 +118,7 @@ namespace iDoneWeb.Controllers
         }
 
         // GET: UserTasks/Delete/5
+        [HttpGet("Delete/{id}")] // Specify the HTTP verb and route parameter
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,7 +137,7 @@ namespace iDoneWeb.Controllers
         }
 
         // POST: UserTasks/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost] // Specify the HTTP verb and route parameter
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

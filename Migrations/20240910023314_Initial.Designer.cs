@@ -11,9 +11,9 @@ using iDoneWeb.Data;
 
 namespace iDoneWeb.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240905215718_InitialCreate")]
-    partial class InitialCreate
+    [DbContext(typeof(iDoneWebContext))]
+    [Migration("20240910023314_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -93,13 +93,13 @@ namespace iDoneWeb.Migrations
             modelBuilder.Entity("iDoneWeb.Models.UserTask", b =>
                 {
                     b.HasOne("iDoneWeb.Models.User", null)
-                        .WithMany("Tasks")
+                        .WithMany("UserTasks")
                         .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("iDoneWeb.Models.User", b =>
                 {
-                    b.Navigation("Tasks");
+                    b.Navigation("UserTasks");
                 });
 #pragma warning restore 612, 618
         }

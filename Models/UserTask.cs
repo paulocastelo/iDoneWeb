@@ -21,6 +21,6 @@ namespace iDoneWeb.Models
         [Required] // Not Null
         public DateTime DueDate { get; set; }
         [Required] // Not Null
-        public UserTaskStatus Status { get; set; }
+        public UserTaskStatusEnum Status { get; set; }
     }
 }

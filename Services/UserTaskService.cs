@@ -6,8 +6,8 @@ namespace iDoneWeb.Services
 {
     public class UserTaskService
     {
-        private readonly ApplicationDbContext _context;
-        public UserTaskService(ApplicationDbContext context)
+        private readonly iDoneWebContext _context;
+        public UserTaskService(iDoneWebContext context)
         {
             _context = context;
         }

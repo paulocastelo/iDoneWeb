@@ -1,4 +1,5 @@
-﻿@model iDoneWeb.Models.UserTask
+﻿@using iDoneWeb.Models.Enums
+@model iDoneWeb.Models.UserTask
 
 @{
     ViewData["Title"] = "Create";
@@ -34,7 +35,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control"></select>
+                <select asp-for="Status" class="form-control">
+                    @foreach (var value in Enum.GetValues(typeof(UserTaskStatusEnum)))
+                    {
+                        <option value="@value">@value</option>
+                    }
+                </select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -49,5 +55,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

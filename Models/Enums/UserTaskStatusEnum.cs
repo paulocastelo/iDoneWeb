@@ -1,6 +1,6 @@
 ﻿namespace iDoneWeb.Models.Enums
 {
-    public enum UserTaskStatus
+    public enum UserTaskStatusEnum
     {
         Pending,
         InProgress,
